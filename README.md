@@ -8,12 +8,13 @@ Open [`/public/sample-output.pdf`](public/sample-output.pdf) before you start. T
 
 ## Setup
 
-1. Clone this repo
-2. Run `npm install`
-3. Copy `.env.local.example` to `.env.local`
-4. Add your `ANTHROPIC_API_KEY` to `.env.local`
-5. Run `npm run dev`
-6. Open [http://localhost:3000](http://localhost:3000)
+1. Fork this repo to your own GitHub account
+2. Clone your fork locally
+3. Run `npm install`
+4. Copy `.env.local.example` to `.env.local`
+5. Add your `ANTHROPIC_API_KEY` to `.env.local`
+6. Run `npm run dev`
+7. Open [http://localhost:3000](http://localhost:3000)
 
 ## Your task
 
@@ -25,7 +26,7 @@ The scaffolding is set up. Your job is to complete the feature so that:
 - The PDF should look like a professionally designed client deliverable
 - The implementation works for any financial topic — not just the example prompt
 
-Submit a PR against this repo when you're done. Include a short description in your PR explaining any decisions you made and anything you'd do differently with more time.
+Submit a PR from your fork back to this repo when you're done. Include a short description in your PR explaining any decisions you made and anything you'd do differently with more time.
 
 ## What we're looking for
 
