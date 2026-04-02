@@ -1,6 +1,6 @@
 # Aspen — AI-Powered Client Document Generator
 
-Aspen is an AI agent for financial advisors. Advisors prompt the system to get things done for their clients — the same way they would ask an assistant. This feature lets an advisor type a natural language prompt and receive a personalized, branded PDF they can send directly to a client. This is a simplified version of how Aspen actually works.
+Aspen is an [AI agent for financial advisors](https://aspenagent.com). Advisors prompt the system to get things done for their clients — the same way they would ask an assistant. This feature lets an advisor type a natural language prompt and receive a personalized, branded PDF they can send directly to a client. This is a simplified version of how Aspen actually works.
 
 ## Design bar
 
