@@ -2,16 +2,57 @@
 
 import { useState } from "react";
 
+const EXAMPLE_PROMPTS = [
+  "Create a PDF for Susie explaining a deferred sales trust",
+  "Walk Susie through charitable remainder trust options",
+  "Brief Susie on 529 plans for her future grandchildren",
+];
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [loading, setLoading] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState(""); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleGenerate() {
-    // TODO: Wire up the generate button to call the API route
-    // - POST to /api/generate with the prompt
-    // - Handle loading and error states
-    // - Download the returned PDF
+    if (!prompt.trim()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!response.ok) {
+        let message = `Request failed (${response.status})`;
+        try {
+          const data = await response.json();
+          if (data?.error) message = data.error;
+        } catch {
+          // fall through with the generic message
+        }
+        throw new Error(message);
+      }
+
+      const blob = await response.blob();
+      const disposition = response.headers.get("Content-Disposition") ?? "";
+      const match = disposition.match(/filename="([^"]+)"/);
+      const filename = match?.[1] ?? "client-document.pdf";
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -41,8 +82,22 @@ export default function Home() {
             disabled={loading}
           />
 
+          <div className="mt-3 flex flex-wrap gap-2">
+            {EXAMPLE_PROMPTS.map((example) => (
+              <button
+                key={example}
+                type="button"
+                onClick={() => setPrompt(example)}
+                disabled={loading}
+                className="text-xs px-2.5 py-1 rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+
           {error && (
-            <p className="mt-3 text-sm text-red-600">{error}</p>
+            <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>
           )}
 
           <button
@@ -52,7 +107,17 @@ export default function Home() {
           >
             {loading ? "Generating..." : "Generate PDF"}
           </button>
+
+          {loading && (
+            <p className="mt-3 text-xs text-gray-500 text-center">
+              Drafting content and composing the PDF. This takes about 15–30 seconds.
+            </p>
+          )}
         </div>
+
+        <p className="mt-4 text-xs text-gray-400 text-center">
+          PDFs are generated per request and downloaded to your device. No copies are stored.
+        </p>
       </div>
     </div>
   );
