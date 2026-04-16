@@ -4,12 +4,24 @@ import { generateContent } from "@/lib/claude";
 import { generatePDF } from "@/lib/pdf";
 
 export async function POST(request: NextRequest) {
-  // TODO: Call generateContent and generatePDF, return the PDF
-  // - Parse the prompt from the request body
-  // - Validate the input
-  // - Call generateContent with the prompt
-  // - Pass the result to generatePDF
-  // - Return the PDF as a Response with appropriate headers
-  // - Handle errors gracefully with user-friendly messages
-  return Response.json({ error: "Not implemented" }, { status: 501 });
+  console.log("Received request to /api/generate",request.body);
+  //First call generateContent to get the content for the PDF, then pass that content to generatePDF to get the PDF as an ArrayBuffer. Finally, return the PDF in the response with appropriate headers for downloading.
+  const { prompt } = await request.json();
+  if (!prompt) {
+    return Response.json({ error: "Prompt is required" }, { status: 400 });
+  }
+  try {
+    const content = await generateContent(prompt);
+
+    const pdf = await generatePDF(content);
+    console.log("Generated PDF of size:", pdf.byteLength);
+    return new Response(pdf, {
+  headers: {
+    'Content-Type': 'application/pdf',
+    'Content-Disposition': 'attachment; filename="report.pdf"',
+  },
+});
+  } catch (error) {
+    return Response.json({ error: "Failed to generate PDF" }, { status: 500 });
+  }
 }

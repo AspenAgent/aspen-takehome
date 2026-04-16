@@ -8,10 +8,32 @@ export default function Home() {
   const [error, setError] = useState(""); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   async function handleGenerate() {
-    // TODO: Wire up the generate button to call the API route
-    // - POST to /api/generate with the prompt
-    // - Handle loading and error states
-    // - Download the returned PDF
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!res.ok) {
+        const { error: msg } = await res.json();
+        throw new Error(msg || "Failed to generate PDF");
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "report.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
