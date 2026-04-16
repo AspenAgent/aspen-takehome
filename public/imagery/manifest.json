@@ -1,0 +1,35 @@
+{
+  "$comment": "Curated stock photography for cover/section imagery. The drafter picks a tag; the renderer resolves it through this manifest. Replace the 6 .jpg files under this folder with actual editorial stock (Unsplash, Pexels, etc.) in the provenance-compatible formats before shipping — alt text and credits are tracked here for attribution.",
+  "images": {
+    "retirement": {
+      "file": "retirement.jpg",
+      "alt": "A quiet Texas ranch at dusk with long shadows across a wooden porch.",
+      "credit": "TODO — drop an editorial stock photo at this path before running end-to-end."
+    },
+    "estate": {
+      "file": "estate.jpg",
+      "alt": "A stately oak tree in late afternoon light.",
+      "credit": "TODO"
+    },
+    "family": {
+      "file": "family.jpg",
+      "alt": "A family dinner table with candles and empty chairs awaiting guests.",
+      "credit": "TODO"
+    },
+    "tax": {
+      "file": "tax.jpg",
+      "alt": "Sunlight falling across a wooden writing desk, fountain pen and ledger book.",
+      "credit": "TODO"
+    },
+    "growth": {
+      "file": "growth.jpg",
+      "alt": "Young oak seedlings catching morning light in a nursery.",
+      "credit": "TODO"
+    },
+    "planning": {
+      "file": "planning.jpg",
+      "alt": "A library reading nook with a single green banker's lamp lit.",
+      "credit": "TODO"
+    }
+  }
+}

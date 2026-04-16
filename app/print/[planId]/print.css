@@ -1,0 +1,187 @@
+/*
+ * Print-route styles.
+ *
+ * The palette tokens are injected as CSS custom properties on the root
+ * container via `style={{ '--palette-...': value }}`. Every component in
+ * the renderer reads from these variables — no hardcoded colors.
+ *
+ * @page rules control the PDF output; the .letter-page selector controls
+ * how things look when you visit /print/<id> in a browser for iteration.
+ */
+
+@page {
+  size: letter;
+  margin: 0;
+}
+
+.print-root {
+  /* Typography tokens (actual font stacks come from next/font CSS vars
+     applied via the pairing's className wrapper). */
+  --font-display-stack: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-body-stack: var(--font-body), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+
+  font-family: var(--font-body-stack);
+  color: var(--palette-text-on-surface);
+  background: #e9e5dc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.print-root * {
+  box-sizing: border-box;
+}
+
+/* A single letter-sized page. In screen preview each .letter-page shows
+   as a card on a gray canvas; in print it fills the actual paper.
+   Strict 1-page-per-section: `height: 11in` + `overflow: hidden` +
+   `break-inside: avoid` keep the element at exactly 11in tall so the
+   tone-deep/tone-surface background fills the full sheet and no section
+   ever spills to a chromeless overflow sheet. The drafter's per-block
+   word ceilings (see lib/agent/schemas.ts `.describe()` hints and the
+   section budget in prompts/drafter.ts) keep content under the budget
+   so the clip bound is rarely hit. */
+.letter-page {
+  position: relative;
+  width: 8.5in;
+  height: 11in;
+  overflow: hidden;
+  break-inside: avoid;
+  margin: 0 auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* `break-after: page` on every .letter-page forces a trailing blank sheet
+   after the last one. Scope the break to all-but-the-last so the Closing
+   page doesn't request a break after itself. */
+.letter-page:not(:last-child) {
+  break-after: page;
+}
+
+.letter-page + .letter-page {
+  margin-top: 0.5in;
+}
+
+@media print {
+  .print-root {
+    background: transparent;
+  }
+  .letter-page {
+    box-shadow: none;
+    margin: 0 auto;
+  }
+  .letter-page + .letter-page {
+    margin-top: 0;
+  }
+}
+
+/* Background tones */
+.tone-deep {
+  background: var(--palette-background-deep);
+  color: var(--palette-text-on-deep);
+}
+.tone-surface {
+  background: var(--palette-background-surface);
+  color: var(--palette-text-on-surface);
+}
+
+/* Display/body font selectors */
+.font-display {
+  font-family: var(--font-display-stack);
+  font-feature-settings: "ss01", "ss02";
+}
+.font-body {
+  font-family: var(--font-body-stack);
+}
+
+/* Page chrome: section kicker + page number bar */
+.page-chrome {
+  position: absolute;
+  top: 0.55in;
+  left: 0.75in;
+  right: 0.75in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body-stack);
+  font-size: 8pt;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.page-chrome .kicker-mark {
+  color: var(--palette-accent-primary);
+  margin-right: 0.4em;
+}
+
+/* Page content area — shared padding for all pages. Absolute positioning
+   gives every page the same 9.15in body area (11in - 1.1in top - 0.75in
+   bottom); combined with `.letter-page { overflow: hidden }` above, this
+   pins content to a single letter-sized sheet. */
+.page-body {
+  position: absolute;
+  top: 1.1in;
+  left: 0.75in;
+  right: 0.75in;
+  bottom: 0.75in;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Horizontal divider rule (gold hairline, used in chrome and between blocks) */
+.accent-rule {
+  display: block;
+  height: 1px;
+  background: var(--palette-accent-primary);
+  border: none;
+  margin: 0;
+}
+
+/* Typography utilities (palette-aware) */
+.display-xl {
+  font-family: var(--font-display-stack);
+  font-weight: 400;
+  font-size: 56pt;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.display-lg {
+  font-family: var(--font-display-stack);
+  font-weight: 400;
+  font-size: 38pt;
+  line-height: 1.05;
+  letter-spacing: -0.005em;
+}
+.display-md {
+  font-family: var(--font-display-stack);
+  font-weight: 500;
+  font-size: 20pt;
+  line-height: 1.2;
+}
+.display-italic {
+  font-style: italic;
+  font-weight: 400;
+}
+.body-lg {
+  font-family: var(--font-body-stack);
+  font-size: 11.5pt;
+  line-height: 1.55;
+}
+.body-md {
+  font-family: var(--font-body-stack);
+  font-size: 10.5pt;
+  line-height: 1.55;
+}
+.body-sm {
+  font-family: var(--font-body-stack);
+  font-size: 9pt;
+  line-height: 1.5;
+}
+.eyebrow {
+  font-family: var(--font-body-stack);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
