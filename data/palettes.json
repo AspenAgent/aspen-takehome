@@ -1,0 +1,91 @@
+{
+  "whitfield:susie": {
+    "id": "whitfield:susie",
+    "name": "Marco & Marigold",
+    "rationale": "Named for Susie's dog Marco, this palette shifts from cool indigo to warm terracotta and coral, honoring the personal relationship while preserving generational trust. Deep rust-red anchors cover pages with confidence; bone surface remains warm and legible. Marigold gold brightens the accent without losing editorial restraint. Heritage serif pairing retained to honor decades of service and family continuity, now wrapped in approachable warmth.",
+    "tokens": {
+      "backgroundDeep": "#8c3428",
+      "backgroundSurface": "#faf5f0",
+      "backgroundAccent": "#f4e4d8",
+      "textOnDeep": "#faf5f0",
+      "textOnSurface": "#2d1f1a",
+      "textSubtle": "#75615a",
+      "accentPrimary": "#e87d3c",
+      "accentSecondary": "#5a7d5e",
+      "accentDanger": "#c73a3a"
+    },
+    "typography": {
+      "pairing": "heritage"
+    },
+    "createdAt": "2026-04-14T22:23:01.005Z",
+    "revisions": [
+      {
+        "prompt": "Don't allow sections to overflow for the next page. Include a page about Suzie's dog named Marco. Regenerate color scheme using reds/pinks/oranges, brighter colors",
+        "at": "2026-04-15T19:51:47.762Z"
+      }
+    ]
+  },
+  "whitfield:marcus": {
+    "id": "whitfield:marcus",
+    "name": "Pacific Slate",
+    "rationale": "A calm, technical palette for a younger tech professional building wealth with precision. Deep charcoal anchors analytical confidence; warm ivory softens the formality. Muted teal accent nods to California's coastal pragmatism without cliché.",
+    "tokens": {
+      "backgroundDeep": "#2a3d3f",
+      "backgroundSurface": "#f7f4ed",
+      "backgroundAccent": "#e8e3d8",
+      "textOnDeep": "#f7f4ed",
+      "textOnSurface": "#1f2d2e",
+      "textSubtle": "#6b7c7d",
+      "accentPrimary": "#5a8b8f",
+      "accentSecondary": "#4a7c5d",
+      "accentDanger": "#a65444"
+    },
+    "typography": {
+      "pairing": "modern"
+    },
+    "createdAt": "2026-04-15T19:58:31.321Z",
+    "revisions": []
+  },
+  "whitfield:matt-sterling": {
+    "id": "whitfield:matt-sterling",
+    "name": "Flatiron Capital",
+    "rationale": "Post-exit clarity meets Colorado pragmatism. Deep slate anchors multi-year planning; warm stone evokes elevation and permanence. Bronze accent reflects earned wealth, not flash. Heritage pairing lends gravitas to complex estate and tax structures.",
+    "tokens": {
+      "backgroundDeep": "#2b3d3a",
+      "backgroundSurface": "#f4f0e8",
+      "backgroundAccent": "#e8e2d5",
+      "textOnDeep": "#f4f0e8",
+      "textOnSurface": "#2b3d3a",
+      "textSubtle": "#6b7470",
+      "accentPrimary": "#a67c52",
+      "accentSecondary": "#5a7d5e",
+      "accentDanger": "#a65442"
+    },
+    "typography": {
+      "pairing": "heritage"
+    },
+    "createdAt": "2026-04-16T13:18:59.032Z",
+    "revisions": []
+  },
+  "whitfield:matt-delacroix": {
+    "id": "whitfield:matt-delacroix",
+    "name": "Hudson Ledger",
+    "rationale": "Finance-district precision meets East Coast restraint. Deep charcoal evokes Manhattan boardrooms; warm ivory references archival bond paper. Muted bronze accents nod to institutional trust without ostentation—appropriate for sophisticated wealth transition and tax strategy.",
+    "tokens": {
+      "backgroundDeep": "#1a2e35",
+      "backgroundSurface": "#f7f3ed",
+      "backgroundAccent": "#e8e0d5",
+      "textOnDeep": "#f7f3ed",
+      "textOnSurface": "#2a3439",
+      "textSubtle": "#6b7278",
+      "accentPrimary": "#9d7e5a",
+      "accentSecondary": "#5a8c7a",
+      "accentDanger": "#a65e52"
+    },
+    "typography": {
+      "pairing": "classic"
+    },
+    "createdAt": "2026-04-16T13:41:21.611Z",
+    "revisions": []
+  }
+}

@@ -1,15 +1,60 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextRequest } from "next/server";
-import { generateContent } from "@/lib/claude";
-import { generatePDF } from "@/lib/pdf";
+import { z } from "zod";
+import { createSseStream } from "@/lib/agent/events";
+import { runGenerate } from "@/lib/agent/orchestrator";
 
-export async function POST(request: NextRequest) {
-  // TODO: Call generateContent and generatePDF, return the PDF
-  // - Parse the prompt from the request body
-  // - Validate the input
-  // - Call generateContent with the prompt
-  // - Pass the result to generatePDF
-  // - Return the PDF as a Response with appropriate headers
-  // - Handle errors gracefully with user-friendly messages
-  return Response.json({ error: "Not implemented" }, { status: 501 });
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+/**
+ * Generate endpoint — runs the 4-phase pipeline and streams events.
+ * `clientId` is required: the UI must resolve it via POST /api/intake first.
+ * This keeps the long pipeline strictly client-pinned and means we never
+ * burn compute on a guess the advisor would have rejected.
+ */
+
+const Body = z.object({
+  prompt: z.string().min(4),
+  clientId: z.string().min(1),
+  advisorId: z.string().default("whitfield"),
+});
+
+export async function POST(req: Request) {
+  let parsed: z.infer<typeof Body>;
+  try {
+    parsed = Body.parse(await req.json());
+  } catch (err) {
+    return Response.json(
+      {
+        error:
+          err instanceof Error ? err.message : "invalid request body",
+      },
+      { status: 400 },
+    );
+  }
+
+  const { stream, emit, close, fail } = createSseStream();
+
+  (async () => {
+    try {
+      await runGenerate({
+        advisorPrompt: parsed.prompt,
+        clientId: parsed.clientId,
+        advisorId: parsed.advisorId,
+        emit,
+      });
+      close();
+    } catch (err) {
+      console.error("[api/generate] pipeline failed", err);
+      fail(err);
+    }
+  })();
+
+  return new Response(stream, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-store, no-transform",
+      Connection: "keep-alive",
+    },
+  });
 }
